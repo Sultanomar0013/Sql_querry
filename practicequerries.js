@@ -230,6 +230,110 @@ export class sqlpractice {
 **      ) AS Subquery;
 
 
+*!HAVE TO LEARN MORE
+
+**SELECT ROUND(LAT_N,4) FROM(
+**SELECT LAT_N, ROW_NUMBER() OVER(ORDER BY LAT_N ASC) AS Rankn FROM STATION) a
+**WHERE Rankn = CEIL(( SELECT COUNT(*) FROM STATION) / 2.0  )
+
+*! THIS IS HOW CONDITION IF ELSE WRITE IN SQL DB
+**  SELECT 
+**        CASE
+**            WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'
+**            WHEN A = B AND B = C THEN 'Equilateral'
+**            WHEN A = B OR B = C OR C = A THEN 'Isosceles'
+**            ELSE 'Scalene'
+**        END AS TRIANGLETYPE
+**  FROM TRIANGLES
+
+*!Complex problem Understanding how COUNT(*) work
+
+**  SELECT CONCAT(NAME, 
+**      CASE
+**        WHEN Occupation = 'Doctor' THEN '(D)'
+**        WHEN Occupation = 'Singer' THEN '(S)'
+**      END)
+**  ORDER BY NAME;
+**  SELECT
+**      CONCAT('There are a total of ', COUNT(*), ' ', LOWER(OCCUPATION), 's.') AS OccupationCount
+**  FROM
+**      OCCUPATIONS
+**  GROUP BY
+**      OCCUPATION
+**  ORDER BY
+**      COUNT(*),LOWER(OCCUPATION);
+
+*!https://www.hackerrank.com/challenges/occupations/problem?isFullScreen=true
+*!Need to study further more
+**SET @r1=0, @r2=0, @r3=0, @r4=0;
+**SELECT MIN(Doctor), MIN(Professor), MIN(Singer), MIN(Actor)
+**FROM(SELECT 
+**     CASE 
+**        WHEN Occupation ="Doctor" THEN (@r1:=@r1+1)
+**        WHEN Occupation ="Actor" THEN ( @r2:= @r2+1)
+**        WHEN Occupation ="Professor" THEN (@r3:=@r3+1)
+**        WHEN Occupation ="Singer" THEN (@r4:= @r4+1) END AS Rownumber,
+**     
+**     CASE WHEN Occupation = "Doctor" THEN Name END AS Doctor,
+**     CASE WHEN Occupation = "Actor" THEN Name END AS Actor,
+**     CASE WHEN Occupation = "Professor" THEN Name END AS Professor,
+**     CASE WHEN Occupation = "Singer" THEN Name END AS Singer
+**     FROM OCCUPATIONS
+**     ORDER BY Name
+**    ) Temp GROUP BY Rownumber;
+
+
+
+
+*! COUNT WORK
+**  SELECT COUNT(*) AS CityCount
+**  FROM CITY
+**  WHERE POPULATION > 100000
+
+*!AGGREGATION
+**  SELECT  SUM(POPULATION)
+**  FROM CITY
+**  WHERE DISTRICT = "California"
+
+
+*!JOIN FUNCTION 
+**SELECT H.hacker_id, H.name 
+**FROM Submissions S
+**JOIN Challenges C
+**ON S.challenge_id = C.challenge_id
+**JOIN Difficulty D
+**ON C.difficulty_level = D.difficulty_level
+**JOIN Hackers H
+**ON H.hacker_id = S.hacker_id
+**AND S.score = D.score
+**GROUP BY H.hacker_id, H.name
+**HAVING Count(S.hacker_id) > 1
+**ORDER BY COUNT(S.hacker_id) DESC, S.hacker_id ASC
+
+
+
+*!JOIN
+**SELECT H.hacker_id , H.name, sum(sscore)
+**    FROM Hackers H 
+**    JOIN (SELECT s.hacker_id,MAX(score) AS sscore FROM Submissions s 
+**                GROUP BY S.hacker_id, S.challenge_id) st 
+**                ON h.hacker_id=st.hacker_id
+**            GROUP BY H.hacker_id, H.name
+**            HAVING SUM(sscore)>0
+**            ORDER BY SUM(sscore) desc, H.hacker_id ASC:
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
