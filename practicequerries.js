@@ -323,7 +323,24 @@ export class sqlpractice {
 **            ORDER BY SUM(sscore) desc, H.hacker_id ASC:
 
 
+SELECT H.hacker_id , H.name, sum(sscore)
+    FROM Hackers H 
+    JOIN (SELECT S.hacker_id,MAX(score) AS sscore FROM Submissions S 
+                GROUP BY S.hacker_id, S.challenge_id) st 
+                ON h.hacker_id=st.hacker_id
+            GROUP BY H.hacker_id, H.name
+            HAVING SUM(sscore)>0
+            ORDER BY SUM(sscore) desc, H.hacker_id ASC:
 
+
+select h.hacker_id,h.name,sum(sscore)
+from Hackers h 
+join (select S.hacker_id,max(score) as sscore from Submissions S 
+      group by s.hacker_id,s.challenge_id) st 
+      on h.hacker_id=st.hacker_id
+group by h.hacker_id,h.name
+having sum(sscore)>0
+order by sum(sscore) desc,h.hacker_id asc;
 
 
 
